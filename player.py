@@ -35,9 +35,9 @@ class Player:
         self.graveyard = []
         self.shuffle_deck()
     
-    #TODO allow player to select card from hand to play
-    def play_card(self, card=None):
-        card = self.hand.pop()
+    # Select card from hand to play, defaults to a random card
+    def play_card(self, int=random.randint(0,4)):
+        card = self.hand.pop(int)
         self.graveyard.append(card)
         return card
 
