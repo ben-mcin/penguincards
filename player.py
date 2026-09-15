@@ -41,3 +41,9 @@ class Player:
         self.graveyard.append(card)
         return card
 
+    # Adds card to wins dictionary
+    def add_win(self, card):
+        self.wins[card.element.value].add(card.colour.value)
+
+    def get_wins(self):
+        return self.wins
