@@ -20,34 +20,34 @@ def determine_winner(card1: Card, card2: Card) -> str:
 
 # Initialise decks and players
 player_deck = Deck()
-computer_deck = Deck()
+cpu_deck = Deck()
 
 player = Player(player_deck)
-computer = Player(computer_deck)
+cpu = Player(cpu_deck)
 
 # Main game loop
 while True:
     # Draw cards until both players have 5 cards in hand
     while len(player.get_hand()) < 5:
         player.draw_card()
-    while len(computer.get_hand()) < 5:
-        computer.draw_card()
+    while len(cpu.get_hand()) < 5:
+        cpu.draw_card()
 
     # Play cards
     player_card = player.play_card()
-    computer_card = computer.play_card()
+    cpu_card = cpu.play_card()
 
-    print(f"Player plays: {player_card}\nComputer plays: {computer_card}")
+    print(f"Player plays: {player_card}\ncpu plays: {cpu_card}")
 
     # Determine winning hand and add to players win conditions
-    match determine_winner(player_card, computer_card):
+    match determine_winner(player_card, cpu_card):
         case 0:
             print("Draw")
         case 1:
             print("Player wins")
             player.add_win(player_card)
         case 2:
-            print("Computer wins")
-            computer.add_win(computer_card)
+            print("cpu wins")
+            cpu.add_win(cpu_card)
 
     break
