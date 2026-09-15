@@ -1,7 +1,20 @@
+import argparse
+
 from deck import Deck
 from player import Player
 from cpu import CPU
 from card import Card, Element
+
+
+def parse_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "difficulty",
+        nargs="?",
+        choices=("easy", "normal", "hard"),
+        help="CPU difficulty (defaults to dumb)",
+    )
+    return parser.parse_args()
 
 
 # Win conditions for card elements
@@ -39,11 +52,15 @@ def choose_card(hand: list[Card]) -> Card:
 
 
 # Initialise decks and players
+args = parse_args()
 player_deck = Deck()
 cpu_deck = Deck()
 
 player = Player(player_deck)
-cpu = CPU(cpu_deck, difficulty="normal")
+if args.difficulty:
+    cpu = CPU(cpu_deck, difficulty=args.difficulty)
+else:
+    cpu = CPU(cpu_deck)
 
 # Main game loop
 while True:
@@ -55,7 +72,10 @@ while True:
 
     # Play cards
     player_card = player.play_card(choose_card(player.get_hand()))
-    cpu_card = cpu.play_card(player.get_wins())
+    if args.difficulty:
+        cpu_card = cpu.play_card(player.get_wins())
+    else:
+        cpu_card = cpu.play_card()
 
     print(f"Player plays: {player_card}\nCPU plays: {cpu_card}")
 

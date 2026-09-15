@@ -114,7 +114,7 @@ class CPU(Player):
     # Implements hard difficulty where CPU randomises play between opponents win conditions and it's own
     def _play_card_hard(self, opponent_wins):
         if random.random() < 0.5:
-            self._play_card_easy(opponent_wins)
+            return self._play_card_easy(opponent_wins)
         else:
-            self._play_card_normal(opponent_wins)
+            return self._play_card_normal(opponent_wins)
     
