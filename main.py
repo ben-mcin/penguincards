@@ -13,10 +13,10 @@ ELEMENT_WINS_AGAINST = {
 def determine_winner(card1: Card, card2: Card) -> str:
     if card1.element == card2.element:
         if card1.number == card2.number:
-            return "draw"
-        return "player" if card1.number > card2.number else "cpu"
+            return 0
+        return 1 if card1.number > card2.number else 2
 
-    return "player" if ELEMENT_WINS_AGAINST[card1.element] == card2.element else "cpu"
+    return 1 if ELEMENT_WINS_AGAINST[card1.element] == card2.element else 2
 
 
 player_deck = Deck()
@@ -42,4 +42,12 @@ player_card = player.play_card()
 computer_card = computer.play_card()
 print(f"{player_card} vs {computer_card}")
 
-print(f"{determine_winner(player_card, computer_card)} wins")
+match determine_winner(player_card, computer_card):
+    case 0:
+        print("Draw")
+    case 1:
+        print("Player wins")
+        player.add_win(player_card)
+    case 2:
+        print("Computer wins")
+        computer.add_win(computer_card)
