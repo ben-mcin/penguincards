@@ -4,8 +4,8 @@ from enum import Enum
 
 class Element(Enum):
     FIRE = "🔥"
+    SNOW = "❄️"
     WATER = "💧"
-    SNOW = "❄️ " #Extra space added for print formatting problems
 
 
 class Colour(Enum):

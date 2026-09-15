@@ -7,7 +7,9 @@ class Player:
         random.shuffle(self.player_deck)
         self.hand = []
         self.graveyard = []
-        self.wins = []
+        self.wins = {"🔥" : set(),
+                     "❄️" : set(),
+                     "💧" : set()}
 
     # Shuffle player deck
     def shuffle_deck(self):
