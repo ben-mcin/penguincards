@@ -17,7 +17,7 @@ class Player:
 
     # Draw card from deck, recycles graveyard if deck is empty, default draws 1 card
     def draw_card(self, count: int = 1):
-        if not self.play_deck:
+        if not self.player_deck:
             self.recycle_graveyard()
         for x in range(0, count):
             self.hand.append(self.player_deck.pop(0))
