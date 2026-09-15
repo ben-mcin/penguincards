@@ -3,11 +3,13 @@ from player import Player
 from card import Card, Element
 
 
+# Win conditions for card elements
 ELEMENT_WINS_AGAINST = {
     Element.FIRE: Element.SNOW,
     Element.SNOW: Element.WATER,
     Element.WATER: Element.FIRE,
 }
+
 
 # Determine winning hand
 def determine_hand_winner(card1: Card, card2: Card) -> str:
@@ -22,6 +24,17 @@ def determine_hand_winner(card1: Card, card2: Card) -> str:
 def check_win_condition(player: Player) -> bool:
     if all(player.get_wins().values()) or any(len(colours) == 3 for colours in player.get_wins().values()):
         return True
+
+# Gets a player to choose a card from their hand
+def choose_card(hand: list[Card]) -> Card:
+    for i, option in enumerate(hand, 1):
+        print(f"{i}: {option}")
+
+    while True:
+        try:
+            return int(input("Choose a card: ")) - 1
+        except (ValueError, IndexError):
+            print("Invalid choice.")
 
 
 # Initialise decks and players
@@ -40,7 +53,7 @@ while True:
         cpu.draw_card()
 
     # Play cards
-    player_card = player.play_card()
+    player_card = player.play_card(choose_card(player.get_hand()))
     cpu_card = cpu.play_card()
 
     print(f"Player plays: {player_card}\nCPU plays: {cpu_card}")
