@@ -1,5 +1,6 @@
 from deck import Deck
 from player import Player
+from cpu import CPU
 from card import Card, Element
 
 
@@ -42,7 +43,7 @@ player_deck = Deck()
 cpu_deck = Deck()
 
 player = Player(player_deck)
-cpu = Player(cpu_deck)
+cpu = CPU(cpu_deck)
 
 # Main game loop
 while True:
