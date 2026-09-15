@@ -9,14 +9,20 @@ ELEMENT_WINS_AGAINST = {
     Element.WATER: Element.FIRE,
 }
 
-
-def determine_winner(card1: Card, card2: Card) -> str:
+# Determine winning hand
+def determine_hand_winner(card1: Card, card2: Card) -> str:
     if card1.element == card2.element:
         if card1.number == card2.number:
             return 0
         return 1 if card1.number > card2.number else 2
 
     return 1 if ELEMENT_WINS_AGAINST[card1.element] == card2.element else 2
+
+# Check if a player meets win conditions
+def check_win_condition(player: Player) -> bool:
+    if all(player.get_wins().values()) or any(len(colours) == 3 for colours in player.get_wins().values()):
+        return True
+
 
 # Initialise decks and players
 player_deck = Deck()
@@ -37,17 +43,25 @@ while True:
     player_card = player.play_card()
     cpu_card = cpu.play_card()
 
-    print(f"Player plays: {player_card}\ncpu plays: {cpu_card}")
+    print(f"Player plays: {player_card}\nCPU plays: {cpu_card}")
 
     # Determine winning hand and add to players win conditions
-    match determine_winner(player_card, cpu_card):
+    match determine_hand_winner(player_card, cpu_card):
         case 0:
             print("Draw")
         case 1:
             print("Player wins")
             player.add_win(player_card)
         case 2:
-            print("cpu wins")
+            print("CPU wins")
             cpu.add_win(cpu_card)
 
-    break
+    print(f"Player wins: {player.get_wins()}\nCPU wins: {cpu.get_wins()}")
+
+    # Check if win conditions have been met
+    if check_win_condition(player):
+        print(f"Player has won the game with the following:\n{player.get_wins()}")
+        break
+    if check_win_condition(cpu):
+        print(f"CPU has won the game with the following:\n{cpu.get_wins()}")
+        break
