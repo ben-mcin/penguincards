@@ -43,7 +43,7 @@ player_deck = Deck()
 cpu_deck = Deck()
 
 player = Player(player_deck)
-cpu = CPU(cpu_deck)
+cpu = CPU(cpu_deck, difficulty="normal")
 
 # Main game loop
 while True:
@@ -55,7 +55,7 @@ while True:
 
     # Play cards
     player_card = player.play_card(choose_card(player.get_hand()))
-    cpu_card = cpu.play_card()
+    cpu_card = cpu.play_card(player.get_wins())
 
     print(f"Player plays: {player_card}\nCPU plays: {cpu_card}")
 
