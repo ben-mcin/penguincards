@@ -68,13 +68,14 @@ while True:
         case 2:
             print("CPU wins")
             cpu.add_win(cpu_card)
+    
 
-    print(f"Player wins: {player.get_wins()}\nCPU wins: {cpu.get_wins()}")
+    print(f"\nPlayer wins: {player.get_wins()}\nCPU wins: {cpu.get_wins()}")
 
     # Check if win conditions have been met
     if check_win_condition(player):
-        print(f"Player has won the game with the following:\n{player.get_wins()}")
+        print(f"\nPlayer has won the game with the following:\n{player.get_wins()}")
         break
     if check_win_condition(cpu):
-        print(f"CPU has won the game with the following:\n{cpu.get_wins()}")
+        print(f"\nCPU has won the game with the following:\n{cpu.get_wins()}")
         break
