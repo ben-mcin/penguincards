@@ -13,7 +13,7 @@ class Player:
 
     # Shuffle player deck
     def shuffle_deck(self):
-        self.player_deck.shuffle()
+        random.shuffle(self.player_deck)
 
     # Draw card from deck
     def draw_card(self):
