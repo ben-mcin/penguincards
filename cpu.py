@@ -108,7 +108,6 @@ class CPU(Player):
             return super().play_card(self.hand.index(result[1]))
         # If all cards are in elements that should be avoided, default to easy difficulty
         else:
-            print("no defensive choice")
             return self._play_card_easy(opponent_wins)
 
     # Implements hard difficulty where CPU randomises play between opponents win conditions and it's own
