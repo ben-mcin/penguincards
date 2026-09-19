@@ -82,7 +82,7 @@ while True:
     # Play cards
     player_card = player.play_card(choose_card(player.get_hand()))
     if args.difficulty:
-        cpu_card = cpu.play_card(player.get_wins())
+        cpu_card = cpu.play_card(player.get_wins(), lowest_wins)
     else:
         cpu_card = cpu.play_card()
 
