@@ -18,6 +18,19 @@ def evaluate_card(card, wins):
     temp_wins[card.element.value].add(card.colour.value)
     return evaluate_win_condition(temp_wins)
 
+# Gets the best choice of card to play based on the scores of each card in hand, depending on if lowest card wins
+def get_best_choice(scores, score, card_number, lowest_wins):
+    if lowest_wins:
+        best_score, best_number = max(
+            ((score, card.number) for score, card in scores),
+            key=lambda x: (x[0], -x[1])
+        )
+    else:
+        best_score, best_number = max(
+            (score, card.number) for score, card in scores
+        )
+    return best_score, best_number
+
 # Assigns weighting to potential win conditions
 def evaluate_opponent(wins):
     scores = {"element_win": sum(bool(items) for items in wins.values()),
@@ -54,14 +67,14 @@ class CPU(Player):
             raise ValueError("Invalid difficulty level. Choose from 'dumb', 'normal', or 'hard'.")
 
     # Implements easy difficulty where CPU makes decision based on it's own win conditions.
-    def _play_card_easy(self, opponent_wins):
+    def _play_card_easy(self, opponent_wins, lowest_wins):
         # Gets weighting for each card in hand based on how it affects the CPU's win conditions
         scores = []
         for card in self.hand:
             score = evaluate_card(card, self.wins)
             scores.append((score, card))
-        # Get the best score and the highest card number for that score
-        best_score, best_number = max((score, card.number) for score, card in scores)
+        # Get the best choice for card to play
+        best_score, best_number = get_best_choice(scores, score, card.number, lowest_wins)
 
         # Randomly chooses from the best plays available
         result = random.choice([
@@ -73,7 +86,7 @@ class CPU(Player):
         return super().play_card(self.hand.index(result[1]))
 
     # Implements normal difficulty where CPU plays based on opponents win conditions, falling back on easy difficulty if no preference available
-    def _play_card_normal(self, opponent_wins):
+    def _play_card_normal(self, opponent_wins, lowest_wins):
         likely_choices = set()
         weighted_choices = evaluate_opponent(opponent_wins)
         # Anticipates likely play by opponent, and which card elements to avoid based on this
@@ -96,10 +109,10 @@ class CPU(Player):
                 score = evaluate_card(card, self.wins)
                 scores.append((score, card))
 
-        # If preffered cards exist, play highest value card
+        # If preffered cards exist, get best choices
         # TODO could be refactored to remove this, if all elements are to be avoided, treat it as no elements to avoid
         if len(scores) > 0:
-            best_score, best_number = max((score, card.number) for score, card in scores)
+            best_score, best_number = get_best_choice(scores, score, card.number, lowest_wins)
             result = random.choice([
                         (score, card)
                         for score, card in scores
@@ -108,12 +121,12 @@ class CPU(Player):
             return super().play_card(self.hand.index(result[1]))
         # If all cards are in elements that should be avoided, default to easy difficulty
         else:
-            return self._play_card_easy(opponent_wins)
+            return self._play_card_easy(opponent_wins, lowest_wins)
 
     # Implements hard difficulty where CPU randomises play between opponents win conditions and it's own
-    def _play_card_hard(self, opponent_wins):
+    def _play_card_hard(self, opponent_wins, lowest_wins):
         if random.random() < 0.5:
-            return self._play_card_easy(opponent_wins)
+            return self._play_card_easy(opponent_wins, lowest_wins)
         else:
-            return self._play_card_normal(opponent_wins)
+            return self._play_card_normal(opponent_wins, lowest_wins)
     
