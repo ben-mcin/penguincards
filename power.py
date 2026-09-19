@@ -17,7 +17,6 @@ class PowerType(Enum):
 @dataclass(frozen=True)
 class Power:
     type: PowerType
-
     # Used by powers that need a number
     amount: int | None = None
 

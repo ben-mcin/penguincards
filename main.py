@@ -3,7 +3,9 @@ import argparse
 from deck import Deck
 from player import Player
 from cpu import CPU
-from card import Card, Element
+from card import Card
+from enums import Element
+from power import PowerType
 
 
 def parse_args():
@@ -26,11 +28,11 @@ ELEMENT_WINS_AGAINST = {
 
 
 # Determine winning hand
-def determine_hand_winner(card1: Card, card2: Card) -> str:
+def determine_hand_winner(card1: Card, card2: Card, lowest_wins: bool) -> str:
     if card1.element == card2.element:
         if card1.number == card2.number:
             return 0
-        return 1 if card1.number > card2.number else 2
+        return 1 if card1.number > card2.number and not lowest_wins else 2
 
     return 1 if ELEMENT_WINS_AGAINST[card1.element] == card2.element else 2
 
@@ -51,10 +53,11 @@ def choose_card(hand: list[Card]) -> Card:
             print("Invalid choice.")
 
 
-# Initialise decks and players
+# Initialise decks, players, and modifiers
 args = parse_args()
 player_deck = Deck()
 cpu_deck = Deck()
+lowest_wins = False
 
 player = Player(player_deck)
 if args.difficulty:
@@ -70,6 +73,10 @@ while True:
     while len(cpu.get_hand()) < 5:
         cpu.draw_card()
 
+    # Announce current modifiers
+    if lowest_wins:
+        print("Lowest wins this hand")
+
     # Play cards
     player_card = player.play_card(choose_card(player.get_hand()))
     if args.difficulty:
@@ -80,7 +87,7 @@ while True:
     print(f"Player plays: {player_card}\nCPU plays: {cpu_card}")
 
     # Determine winning hand and add to players win conditions
-    match determine_hand_winner(player_card, cpu_card):
+    match determine_hand_winner(player_card, cpu_card, lowest_wins):
         case 0:
             print("Draw")
         case 1:
@@ -89,8 +96,14 @@ while True:
         case 2:
             print("CPU wins")
             cpu.add_win(cpu_card)
-    
 
+    # If a lowest wins power card is played, set flag for next hand. Otherwise, reset.
+    if (player_card.power and player_card.power.type == PowerType.LOWEST_WINS) or \
+        (cpu_card.power and cpu_card.power.type == PowerType.LOWEST_WINS):
+            lowest_wins = True
+    else:
+        lowest_wins = False
+    
     print(f"\nPlayer wins: {player.get_wins()}\nCPU wins: {cpu.get_wins()}")
 
     # Check if win conditions have been met
