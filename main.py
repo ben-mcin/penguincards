@@ -32,8 +32,10 @@ def determine_hand_winner(card1: Card, card2: Card, lowest_wins: bool) -> str:
     if card1.element == card2.element:
         if card1.number == card2.number:
             return 0
-        return 1 if card1.number > card2.number and not lowest_wins else 2
-
+        if not lowest_wins:
+            return 1 if card1.number > card2.number else 2
+        else:
+            return 1 if card1.number < card2.number else 2
     return 1 if ELEMENT_WINS_AGAINST[card1.element] == card2.element else 2
 
 # Check if a player meets win conditions
