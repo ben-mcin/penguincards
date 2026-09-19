@@ -1,27 +1,6 @@
 from dataclasses import dataclass
-from enum import Enum
-
-
-class Element(Enum):
-    FIRE = "🔥"
-    SNOW = "❄️"
-    WATER = "💧"
-
-
-class Colour(Enum):
-    RED = "red"
-    BLUE = "blue"
-    YELLOW = "yellow"
-    GREEN = "green"
-    ORANGE = "orange"
-    PURPLE = "purple"
-
-
-class Power(Enum):
-    #TODO implement powers
-    PLACEHOLDER = ""
-
-
+from enums import Element, Colour
+from power import Power
 
 @dataclass(frozen=True)
 class Card:
