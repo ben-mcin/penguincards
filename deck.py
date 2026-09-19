@@ -1,4 +1,5 @@
-from card import Card, Element, Colour, Power
+from card import Card, Element, Colour
+from power import Power, PowerType
 import random
 
 
@@ -12,9 +13,9 @@ starter_deck_regular_cards = [Card(Element.FIRE, 3, Colour.BLUE),
                               Card(Element.WATER, 2, Colour.GREEN),
                               Card(Element.WATER, 4, Colour.PURPLE),]
 
-starter_deck_power_cards = [Card(Element.FIRE, 10, Colour.YELLOW, Power.PLACEHOLDER),
-                            Card(Element.WATER, 10, Colour.YELLOW, Power.PLACEHOLDER),
-                            Card(Element.SNOW, 10, Colour.GREEN, Power.PLACEHOLDER)]
+starter_deck_power_cards = [Card(Element.FIRE, 10, Colour.YELLOW, Power(PowerType.LOWEST_WINS)),
+                            Card(Element.WATER, 10, Colour.YELLOW, Power(PowerType.LOWEST_WINS)),
+                            Card(Element.SNOW, 10, Colour.GREEN, Power(PowerType.LOWEST_WINS))]
 
 
 
